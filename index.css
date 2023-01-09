@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+  }
+
+
+  .cell {
+    border: 5px solid black; 
+    width: 100px;
+    height: 100px;
+    cursor: crosshair;
+    font-size: 75px;
+   }
+
+   #board-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 225px;
+    margin: auto;
+    font-family: fantasy;
+    text-align: center;
+    text-decoration:underline;
+   }
+  
+*{
+  background-color: #2697cf;
+}
+
+button{
+  background-color: aqua;
+  font-weight: bold;
+}
+
+#nameplate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
