@@ -1,35 +1,14 @@
 // state
-let board = [
-    ['','',''],
-    ['','',''],
-    ['','',''],
-]
 
-
-
-let state = {
+const state = {
     players:['',''],
-    currentPayer: '',
-    };
-
-let playerOne = '';
-let playerTwo = '';
-
-const winIfMatch = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-    ];
-
-    const winMessage = () => `Player ${currentPlayer} has won the game`;
-    const drawMessage = () => `Both Players Draw`;
-    const currentPlayerTurn = () => `It's ${currentPlayer}'s turn`;
-
+    currentPlayer: '',
+    board:[
+        ['','',''],
+        ['','',''],
+        ['','',''],
+    ],
+};
 
 //dom Selection
 const section = document.getElementsByTagName('section')[0];
@@ -40,34 +19,60 @@ const playerTwoInput = document.getElementById("player-two-name");
 const playerTwoDisplay = document.getElementById('player-two-display')
 const resetGameButton = document.getElementById('reset')
 const turnIndicator = document.getElementById('turn-indicator')
-const cell = document.getElementsByClassName('cell')
+const cells = document.getElementsByClassName('cell')
+const turnPlayer = document.getElementById('turn-player')
 
 
-//functions
-const resetGame = () =>{
-    board.innerText = ['','',''],
-                      ['','',''],
-                      ['','',''];
-    playerOneDisplay.innerText = 'Player 1 is:'
-    playerTwoDisplay.innerText = 'Player 2 is:'
-};
 
 const checkWinDraw = () => {
-    let roundWon = false;
-    for (let i = 0; i <= 7; i++) {
-        const playerWin = winIfMatch[i];
-        const a = board[playerWin[0]];
-        const b = board[playerWin[1]];
-        const c = board[playerWin[2]];
-        if (a === '' || b === '' || c === '') {
-            continue;
-        }
-        if (a === b && b === c) {
-            roundWon = true;
-            break;
-        }
+    const gamePiece = state.currentPlayer === state.players[0] ? 'X' : 'O';
+    if(state.board[0][0] === gamePiece && 
+        state.board[0][1] === gamePiece &&
+        state.board[0][2] === gamePiece)
+    {
+        window.alert(`${state.currentPlayer} Wins!`)
+    } else if(state.board[1][0] === gamePiece && 
+        state.board[1][1] === gamePiece &&
+        state.board[1][2] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
+    }else if(state.board[2][0] === gamePiece && 
+        state.board[2][1] === gamePiece &&
+        state.board[2][2] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
+    }else if(state.board[0][1] === gamePiece && 
+        state.board[1][0] === gamePiece &&
+        state.board[2][0] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
+    }else if(state.board[0][1] === gamePiece && 
+        state.board[1][1] === gamePiece &&
+        state.board[2][1] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
+    }else if(state.board[0][2] === gamePiece && 
+        state.board[1][2] === gamePiece &&
+        state.board[2][2] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
+    }else if(state.board[0][0] === gamePiece && 
+        state.board[1][1] === gamePiece &&
+        state.board[2][2] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
+    }else if(state.board[2][0] === gamePiece && 
+        state.board[1][1] === gamePiece &&
+        state.board[0][2] === gamePiece
+    ){
+        window.alert(`${state.currentPlayer} Wins!`)
     }
+        
+        
+        
+         
 };
+
 
 
 
@@ -75,23 +80,63 @@ const checkWinDraw = () => {
 
 for(let i=0; i < playerNameButton.length; i++){
     playerNameButton[i].addEventListener('click', (event) =>{
-        const isPlayer1 = event.target.innerText.includes(1)
-
+        const isPlayer1 = event.target.innerText.includes('X')
         if(isPlayer1){
             state.currentPlayer = playerOneInput.value;
             state.players[0] = playerOneInput.value;
-            playerOneDisplay.innerText = `player 1 is: ${playerOneInput.value}`;
-            
+            playerOneDisplay.innerText = `Player X Is: ${playerOneInput.value}`;
+            turnPlayer.innerText = `Current Player Is: ${state.players[0]}`
+
         } else {
             state.players[1] = playerTwoInput.value;
-            playerTwoDisplay.innerText = `player 2 is: ${playerTwoInput.value}`;
-            
-        }
-
-        
+            playerTwoDisplay.innerText = `Player O Is: ${playerTwoInput.value}`;
+           
+        }        
     });
 }
 
-resetGameButton.addEventListener('click', resetGame);
+for(let i=0; i < cells.length; i++){
+    cells[i].addEventListener('click', (event) =>{
+        if (event.target.innerText !== ''){
+            return
+        };
+        if (state.currentPlayer === state.players[0]){
+            event.target.innerText = 'X';
+
+            
+            state.board[event.target.id[0]][event.target.id[1]] = 'X'
+            checkWinDraw();
+
+            state.currentPlayer = state.players[1];
+            turnPlayer.innerText = `Current Player Is: ${state.players[1]}`
+        } 
+        else {
+            
+            event.target.innerText = 'O';
+            state.board[event.target.id[0]][event.target.id[1]] = "O"
+            checkWinDraw();
+            state.currentPlayer = state.players[0];
+            turnPlayer.innerText = `Current Player Is: ${state.players[0]}`
+        }
+    })
+}
+
+
+resetGameButton.addEventListener('click', (event) => {
+    state.board = [['','',''],['','',''],['','','']];
+    
+    for(let i = 0; i < cells.length; i++ ){
+        const cell = cells[i]
+        cell.innerText = ''
+    }
+
+    turnPlayer.innerText = ''
+    playerOneDisplay.innerText = 'Player X is:'
+    playerTwoDisplay.innerText = 'Player O is:'
+    playerOneInput.value = ''
+    playerTwoInput.value = ''
+    state.players = ['','']
+    state.currentPlayer = ''
+});
 
 
